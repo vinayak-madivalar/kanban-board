@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const KanbanBoard = ({ tasks, setTasks }) => {
+  const [start, setStart] = useState(false);
+
   const onDragStart = (e, taskId, sourceColumn) => {
     e.dataTransfer.setData("taskId", taskId);
     e.dataTransfer.setData("sourceColumn", sourceColumn);
+    setStart(true);
   };
 
   const onDrop = (e, destColumn) => {
+    setStart(false);
     const taskId = e.dataTransfer.getData("taskId");
     const sourceColumn = e.dataTransfer.getData("sourceColumn");
 
@@ -55,16 +60,18 @@ const KanbanBoard = ({ tasks, setTasks }) => {
   };
 
   return (
-    <div className="flex justify-center items-start p-4">
+    <div className="flex justify-center items-start -4">
       {Object.keys(tasks).map((column, index) => (
         <div
           key={index}
-          className="w-1/4 "
+          className={`w-1/4 m-2 py-2 h-dvh ${
+            start === true ? "border-2 shadow-md" : ""
+          }`}
           onDrop={(e) => onDrop(e, column)}
           onDragOver={allowDrop}
         >
           <div className=" p-2 rounded">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start ">
               <div className="flex justify-between gap-4 items-baseline">
                 <h2
                   style={{
@@ -108,7 +115,7 @@ const KanbanBoard = ({ tasks, setTasks }) => {
             </div>
             <button
               onClick={() => addTask(column)}
-              className="text-gray-400 flex items-center gap-1 py-1"
+              className="text-gray-400 flex items-center gap-1 my-2 py-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

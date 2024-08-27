@@ -14,7 +14,7 @@ const TaskDetails = ({ tasks, setTasks }) => {
     let foundStatus = "";
 
     for (const key in tasks) {
-      const taskInList = tasks[key]?.find((task) => task.id === id);
+      const taskInList = tasks[key].find((task) => task.id === id);
       if (taskInList) {
         foundTask = taskInList;
         foundStatus = key;
